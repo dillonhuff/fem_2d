@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "vec2.h"
 
 namespace fem_2d {

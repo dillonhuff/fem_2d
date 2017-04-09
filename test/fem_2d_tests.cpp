@@ -2,6 +2,8 @@
 
 #include "catch.hpp"
 
+#include "constraint.h"
+#include "direct_solve.h"
 #include "trimesh.h"
 #include "vec2.h"
 
@@ -20,7 +22,7 @@ namespace fem_2d {
     tris.push_back({0, 1, 2});
     tris.push_back({0, 3, 2});
 
-    trimesh t{points, tris};
+    trimesh mesh{points, tris};
 
     vector<vec2> forces;
     forces.push_back(vec2(0, 0));
@@ -28,8 +30,16 @@ namespace fem_2d {
     forces.push_back(vec2(0, -1000));
     forces.push_back(vec2(0, 0));
 
+    vector<constraint2> constraints;
+    constraints.push_back({0, XY_FIXED});//{0, 1, 3, 6, 7};
+    constraints.push_back({3, XY_FIXED});//{0, 1, 3, 6, 7};
+    constraints.push_back({1, Y_FIXED});//{0, 1, 3, 6, 7};
+
     vector<vec2> displacements =
-      compute_displacements();
+      compute_displacements(mesh, constraints, forces);
+
+
+    REQUIRE(displacements.size() == 4);
   }
   
 }

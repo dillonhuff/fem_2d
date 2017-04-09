@@ -13,9 +13,14 @@ SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${EXTRA_CXX_COMPILE_FLAGS}")
 
 INCLUDE_DIRECTORIES(./src/)
 
+SET(SRC_FILES ./src/direct_solve.cpp
+	      ./src/trimesh.cpp
+	      ./src/vec2.cpp
+	      ./src/constraint.cpp)
+
 SET(TEST_FILES ./test/fem_2d_tests.cpp)
 
-add_executable(all-tests ${TEST_FILES})
+add_executable(all-tests ${TEST_FILES} ${SRC_FILES})
 #target_link_libraries(all-tests )
 
 ######### VTK Example ##########

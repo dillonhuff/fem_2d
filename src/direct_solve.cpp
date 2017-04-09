@@ -36,24 +36,61 @@ namespace fem_2d {
   ublas::matrix<double>
   build_k_matrix(const trimesh& mesh) {
     //ublas::vector<double> pts = to_vector(mesh.pts);
-    unsigned num_tris = mesh.tris.size();
-    ublas::matrix<double> k_inv = ublas::identity_matrix<float>(num_tris);
+    unsigned dof = 2*mesh.verts.size();
+    ublas::matrix<double> k_inv = ublas::identity_matrix<float>(dof);
 
     return k_inv;
   }
 
-  void cull_by_constraints(const ublas::vector<double>& v,
-			   const std::vector<unsigned> to_delete) {
+  template<typename T>
+  bool elem(const T& e, const std::vector<T>& elems) {
+    return find(begin(elems), end(elems), e) != end(elems);
   }
 
-  void cull_by_constraints(const ublas::matrix<double>& v,
+  void cull_by_constraints(ublas::vector<double>& v,
+			   std::vector<unsigned>& to_delete) {
+    assert(v.size() > to_delete.size());
+
+    sort(begin(to_delete), end(to_delete));
+
+    ublas::vector<double> cv(v.size() - to_delete.size());
+
+    unsigned cv_ind = 0;
+    for (unsigned i = 0; i < v.size(); i++) {
+      if (!elem(i, to_delete)) {
+	cv(cv_ind) = v[i];
+	cv_ind++;
+      }
+    }
+    v = cv;
+  }
+
+  void cull_by_constraints(ublas::matrix<double>& v,
 			   const std::vector<unsigned> to_delete) {
   }
 
   std::vector<unsigned>
   build_num_constraints(const std::vector<constraint2>& constraints) {
     vector<unsigned> cnums;
-    
+    for (auto c : constraints) {
+      switch (c.c) {
+      case X_FIXED:
+	cnums.push_back(2*c.point_number);
+	break;
+
+      case Y_FIXED:
+	cnums.push_back(2*c.point_number + 1);
+	break;
+
+      case XY_FIXED:
+	cnums.push_back(2*c.point_number);
+	cnums.push_back(2*c.point_number + 1);
+	break;
+	
+      default:
+	assert(false);
+      }
+    }
     return cnums;
   }
 
@@ -67,6 +104,13 @@ namespace fem_2d {
     vector<unsigned> num_constraints = build_num_constraints(constraints);
     cull_by_constraints(f, num_constraints);
     cull_by_constraints(k, num_constraints);
+
+    cout << "f size = " << f.size() << endl;
+    cout << "f = " << endl;
+    cout << f << endl;
+
+    cout << "k size 1 = " << k.size1() << endl;
+    cout << "k size 2 = " << k.size2() << endl;
 
     ublas::matrix<double> k_inv = ublas::identity_matrix<float>(k.size1());
     ublas::permutation_matrix<size_t> pm(k.size1());

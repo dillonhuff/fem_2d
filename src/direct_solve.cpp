@@ -33,6 +33,43 @@ namespace fem_2d {
     return v;
   }
 
+  template<typename T>
+  bool elem(const T& e, const std::vector<T>& elems) {
+    return find(begin(elems), end(elems), e) != end(elems);
+  }
+
+  std::vector<vec2>
+  from_vector(const ublas::vector<double>& pts,
+	      const unsigned len,
+	      std::vector<unsigned>& deleted_inds) {
+    vector<vec2> v;
+
+    unsigned pts_ind = 0;
+    for (unsigned i = 0; i < (deleted_inds.size() + pts.size()) / 2.0; i++) {
+
+      cout << "pts_ind = " << pts_ind << endl;
+
+      unsigned x_ind = 2*i;
+      unsigned y_ind = 2*i + 1;
+
+      vec2 next(0, 0);
+      if (!elem(x_ind, deleted_inds)) {
+	next = vec2(pts[pts_ind], next.y());
+	pts_ind++;
+      }
+      if (!elem(y_ind, deleted_inds)) {
+	next = vec2(next.x(), pts[pts_ind]);
+	pts_ind++;
+      }
+
+      v.push_back(next);
+
+      //v.push_back( vec2(pts(i), pts(i + 1)) );
+    }
+
+    return v;
+  }
+  
   ublas::matrix<double>
   build_k_matrix(const trimesh& mesh) {
     //ublas::vector<double> pts = to_vector(mesh.pts);
@@ -40,11 +77,6 @@ namespace fem_2d {
     ublas::matrix<double> k_inv = ublas::identity_matrix<float>(dof);
 
     return k_inv;
-  }
-
-  template<typename T>
-  bool elem(const T& e, const std::vector<T>& elems) {
-    return find(begin(elems), end(elems), e) != end(elems);
   }
 
   void cull_by_constraints(ublas::vector<double>& v,
@@ -66,7 +98,43 @@ namespace fem_2d {
   }
 
   void cull_by_constraints(ublas::matrix<double>& v,
-			   const std::vector<unsigned> to_delete) {
+			   std::vector<unsigned>& to_delete) {
+    assert(v.size1() > to_delete.size());
+    assert(v.size2() > to_delete.size());
+
+    sort(begin(to_delete), end(to_delete));
+
+    ublas::matrix<double> cv(v.size1() - to_delete.size(),
+			     v.size2() - to_delete.size());
+
+    unsigned cv_ind_1 = 0;
+
+    for (unsigned i = 0; i < v.size1(); i++) {
+      if (!elem(i, to_delete)) {
+
+	unsigned cv_ind_2 = 0;
+    
+	for (unsigned j = 0; j < v.size2(); j++) {
+	  if (!elem(j, to_delete)) {
+	    cout << "i = " << i << endl;
+	    cout << "j = " << j << endl;
+
+	    cout << "cv_1 = " << cv_ind_1 << endl;
+	    cout << "cv_2 = " << cv_ind_2 << endl;
+
+	    cv(cv_ind_1, cv_ind_2) = v(i, j);
+	    cv_ind_2++;
+
+	    cout << "Done assigning" << endl;
+	  }
+	}
+
+	cv_ind_1++;
+      }
+    }
+
+    v = cv;
+
   }
 
   std::vector<unsigned>
@@ -111,6 +179,8 @@ namespace fem_2d {
 
     cout << "k size 1 = " << k.size1() << endl;
     cout << "k size 2 = " << k.size2() << endl;
+    cout << "k = " << endl;
+    cout << k << endl;
 
     ublas::matrix<double> k_inv = ublas::identity_matrix<float>(k.size1());
     ublas::permutation_matrix<size_t> pm(k.size1());
@@ -121,7 +191,8 @@ namespace fem_2d {
 
     cout << "u = " << u << endl;
 
-    return from_vector(u);
+    unsigned original_size = 2*forces.size();
+    return from_vector(u, original_size, num_constraints);
 
   }
 

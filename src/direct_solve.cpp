@@ -81,8 +81,6 @@ namespace fem_2d {
     // Geometry
     double thickness = 0.5;
 
-    // TODO: Insert real calculations
-    double area = 1.0;
     ublas::matrix<double> D = ublas::zero_matrix<double>(3, 3);
 
     D(0, 0) = 1;
@@ -148,7 +146,9 @@ namespace fem_2d {
     cout << "detJ_" << elem_ind << " = " << detJ << endl;
 
     B = (1.0 / detJ) * B;
-    
+
+    double area = 1.0; //0.5*fabs();
+
     D = thickness*area*D;
     ublas::matrix<double> B_t = trans(B);
     ublas::matrix<double> DB = prod(D, B);
@@ -164,8 +164,24 @@ namespace fem_2d {
 
     ublas::matrix<double> k = ublas::zero_matrix<double>(dof);
     for (unsigned i = 0; i < 6; i++) {
-      
+
+      unsigned global_row_ind = 0;
+      if (i % 2 == 0) {
+	global_row_ind = 2 * t.verts[i / 2];
+      } else {
+	global_row_ind = 2 * t.verts[(i - 1) / 2] + 1;
+      }
+
       for (unsigned j = 0; j < 6; j++) {
+	unsigned global_col_ind = 0;
+	if (i % 2 == 0) {
+	  global_col_ind = 2 * t.verts[i / 2];
+	} else {
+	  global_col_ind = 2 * t.verts[(i - 1) / 2] + 1;
+	}
+
+	k(global_row_ind, global_col_ind) = k_basic(i, j);
+
       }
     }
     

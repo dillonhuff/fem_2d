@@ -20,7 +20,7 @@ namespace fem_2d {
 
     vector<vertex_triangle> tris;
     tris.push_back({0, 1, 2});
-    tris.push_back({0, 3, 2});
+    tris.push_back({0, 2, 3});
 
     trimesh mesh{points, tris};
 

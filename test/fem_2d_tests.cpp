@@ -14,9 +14,9 @@ namespace fem_2d {
   TEST_CASE("2 triangle system") {
     vector<vec2> points;
     points.push_back(vec2(0, 0));
-    points.push_back(vec2(1, 0));
-    points.push_back(vec2(1, 1));
-    points.push_back(vec2(0, 1));
+    points.push_back(vec2(3, 0));
+    points.push_back(vec2(3, 2));
+    points.push_back(vec2(0, 2));
 
     vector<vertex_triangle> tris;
     tris.push_back({0, 1, 2});

@@ -145,7 +145,11 @@ namespace fem_2d {
 
     cout << "detJ_" << elem_ind << " = " << detJ << endl;
 
+    cout << "B before detJ = " << endl;
+    cout << B << endl;
+    
     B = (1.0 / detJ) * B;
+
 
     double area = std::abs(x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2; //1.0; //0.5*fabs();
 
@@ -176,10 +180,10 @@ namespace fem_2d {
 
       for (unsigned j = 0; j < 6; j++) {
 	unsigned global_col_ind = 0;
-	if (i % 2 == 0) {
-	  global_col_ind = 2 * t.verts[i / 2];
+	if (j % 2 == 0) {
+	  global_col_ind = 2 * t.verts[j / 2];
 	} else {
-	  global_col_ind = 2 * t.verts[(i - 1) / 2] + 1;
+	  global_col_ind = 2 * t.verts[(j - 1) / 2] + 1;
 	}
 
 	k(global_row_ind, global_col_ind) = k_basic(i, j);
@@ -200,6 +204,9 @@ namespace fem_2d {
       ublas::matrix<double> k_i = build_element_k_matrix(i, mesh);
       k += k_i;
     }
+
+    cout << "k before culling" << endl;
+    cout << k << endl;
 
     return k;
   }
@@ -241,16 +248,8 @@ namespace fem_2d {
     
 	for (unsigned j = 0; j < v.size2(); j++) {
 	  if (!elem(j, to_delete)) {
-	    cout << "i = " << i << endl;
-	    cout << "j = " << j << endl;
-
-	    cout << "cv_1 = " << cv_ind_1 << endl;
-	    cout << "cv_2 = " << cv_ind_2 << endl;
-
 	    cv(cv_ind_1, cv_ind_2) = v(i, j);
 	    cv_ind_2++;
-
-	    cout << "Done assigning" << endl;
 	  }
 	}
 
@@ -314,6 +313,7 @@ namespace fem_2d {
 
     ublas::vector<double> u = prod(k_inv, f);
 
+    cout.precision(17);
     cout << "u = " << u << endl;
 
     unsigned original_size = 2*forces.size();

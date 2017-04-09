@@ -1,5 +1,7 @@
 #pragma once
 
+#include "vec2.h"
+
 namespace fem_2d {
 
   struct vertex_triangle {
@@ -15,6 +17,8 @@ namespace fem_2d {
   };
 
   class trimesh {
-    
+  public:
+    std::vector<vec2> verts;
+    std::vector<vertex_triangle> tris;
   };
 }

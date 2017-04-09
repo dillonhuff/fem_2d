@@ -17,7 +17,19 @@ namespace fem_2d {
     points.push_back(vec2(0, 1));
 
     vector<vertex_triangle> tris;
-    
+    tris.push_back({0, 1, 2});
+    tris.push_back({0, 3, 2});
+
+    trimesh t{points, tris};
+
+    vector<vec2> forces;
+    forces.push_back(vec2(0, 0));
+    forces.push_back(vec2(0, 0));
+    forces.push_back(vec2(0, -1000));
+    forces.push_back(vec2(0, 0));
+
+    vector<vec2> displacements =
+      compute_displacements();
   }
   
 }

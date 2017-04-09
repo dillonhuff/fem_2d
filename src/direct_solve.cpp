@@ -69,14 +69,75 @@ namespace fem_2d {
 
     return v;
   }
+
+  ublas::matrix<double>
+  build_element_k_matrix(const unsigned elem_ind, const trimesh& mesh) {
+    unsigned dof = 2*mesh.verts.size();
+
+    // Steel material properties
+    double youngs_modulus = 30e6;
+    double nu = 0.25;
+
+    // Geometry
+    double thickness = 0.5;
+
+    // TODO: Insert real calculations
+    double area = 1.0;
+    ublas::matrix<double> D = ublas::zero_matrix<double>(3, 3);
+
+    D(0, 0) = 1;
+    D(0, 1) = nu;
+    D(0, 2) = 0;
+
+    D(1, 0) = nu;
+    D(1, 1) = 1;
+    D(1, 2) = 0;
+
+    D(2, 0) = 0;
+    D(2, 1) = 0;
+    D(2, 2) = (1 - nu) / 2;
+
+    D = (youngs_modulus / (1 - nu*nu)) * D;
+    cout << "D = " << endl;
+    cout << D << endl;
+
+    ublas::matrix<double> B = ublas::zero_matrix<double>(3, 6);
+
+    D = thickness*area*D;
+    ublas::matrix<double> B_t = trans(B);
+    ublas::matrix<double> DB = prod(D, B);
+
+    cout << "Computing B_t D B" << endl;
+
+    ublas::matrix<double> k_basic = prod(B_t, DB);
+
+    cout << "Done with B_t D B" << endl;
+
+    cout << "k_" << elem_ind << " = " << endl;
+    cout << k_basic << endl;
+
+    ublas::matrix<double> k = ublas::zero_matrix<double>(dof);
+    for (unsigned i = 0; i < 6; i++) {
+      
+      for (unsigned j = 0; j < 6; j++) {
+      }
+    }
+    
+    return k;
+  }
   
   ublas::matrix<double>
   build_k_matrix(const trimesh& mesh) {
     //ublas::vector<double> pts = to_vector(mesh.pts);
     unsigned dof = 2*mesh.verts.size();
-    ublas::matrix<double> k_inv = ublas::identity_matrix<float>(dof);
+    ublas::matrix<double> k = ublas::zero_matrix<double>(dof);
 
-    return k_inv;
+    for (unsigned i = 0; i < mesh.tris.size(); i++) {
+      ublas::matrix<double> k_i = build_element_k_matrix(i, mesh);
+      k += k_i;
+    }
+
+    return k;
   }
 
   void cull_by_constraints(ublas::vector<double>& v,
@@ -182,7 +243,7 @@ namespace fem_2d {
     cout << "k = " << endl;
     cout << k << endl;
 
-    ublas::matrix<double> k_inv = ublas::identity_matrix<float>(k.size1());
+    ublas::matrix<double> k_inv = ublas::identity_matrix<double>(k.size1());
     ublas::permutation_matrix<size_t> pm(k.size1());
     lu_factorize(k, pm);
     lu_substitute(k, pm, k_inv);    

@@ -31,9 +31,9 @@ namespace fem_2d {
     forces.push_back(vec2(0, 0));
 
     vector<constraint2> constraints;
-    constraints.push_back({0, XY_FIXED});//{0, 1, 3, 6, 7};
-    constraints.push_back({3, XY_FIXED});//{0, 1, 3, 6, 7};
-    constraints.push_back({1, Y_FIXED});//{0, 1, 3, 6, 7};
+    constraints.push_back({0, XY_FIXED});
+    constraints.push_back({3, XY_FIXED});
+    constraints.push_back({1, Y_FIXED});
 
     vector<vec2> displacements =
       compute_displacements(mesh, constraints, forces);

@@ -41,9 +41,9 @@ namespace fem_2d {
 
     REQUIRE(displacements.size() == 4);
 
-    cout << "disp[2].x() = " << displacements[2].x() << endl;
+    cout << "disp[2].y() = " << displacements[2].y() << endl;
 
-    REQUIRE(displacements[2].x() > 0.0);
+    REQUIRE(displacements[2].y() < 0.0);
   }
   
 }

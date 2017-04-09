@@ -147,17 +147,19 @@ namespace fem_2d {
 
     B = (1.0 / detJ) * B;
 
-    double area = 1.0; //0.5*fabs();
+    double area = std::abs(x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2; //1.0; //0.5*fabs();
 
-    D = thickness*area*D;
+    cout << "Area = " << area << endl;
+
+    //    D = thickness*area*D;
     ublas::matrix<double> B_t = trans(B);
     ublas::matrix<double> DB = prod(D, B);
 
     cout << "Computing B_t D B" << endl;
 
     ublas::matrix<double> k_basic = prod(B_t, DB);
-
     cout << "Done with B_t D B" << endl;
+    k_basic = thickness*area*k_basic;
 
     cout << "k_" << elem_ind << " = " << endl;
     cout << k_basic << endl;

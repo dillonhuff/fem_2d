@@ -5,6 +5,7 @@
 #include "constraint.h"
 #include "direct_solve.h"
 #include "trimesh.h"
+#include "utils.h"
 #include "vec2.h"
 
 using namespace std;
@@ -43,7 +44,7 @@ namespace fem_2d {
 
     cout << "disp[2].y() = " << displacements[2].y() << endl;
 
-    REQUIRE(displacements[2].y() < 0.0);
+    REQUIRE(within_eps(displacements[2].y(), -7.415e-5, 0.005));
   }
   
 }

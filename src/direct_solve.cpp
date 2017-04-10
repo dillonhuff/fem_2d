@@ -47,8 +47,6 @@ namespace fem_2d {
     unsigned pts_ind = 0;
     for (unsigned i = 0; i < (deleted_inds.size() + pts.size()) / 2.0; i++) {
 
-      cout << "pts_ind = " << pts_ind << endl;
-
       unsigned x_ind = 2*i;
       unsigned y_ind = 2*i + 1;
 
@@ -64,7 +62,6 @@ namespace fem_2d {
 
       v.push_back(next);
 
-      //v.push_back( vec2(pts(i), pts(i + 1)) );
     }
 
     return v;
@@ -143,15 +140,12 @@ namespace fem_2d {
 
     double detJ = x13*y23 - y13*x23;
 
-    cout << "detJ_" << elem_ind << " = " << detJ << endl;
-
-    cout << "B before detJ = " << endl;
     cout << B << endl;
     
     B = (1.0 / detJ) * B;
 
 
-    double area = std::abs(x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2; //1.0; //0.5*fabs();
+    double area = std::abs(x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2;
 
     cout << "Area = " << area << endl;
 
@@ -164,9 +158,6 @@ namespace fem_2d {
     ublas::matrix<double> k_basic = prod(B_t, DB);
     cout << "Done with B_t D B" << endl;
     k_basic = thickness*area*k_basic;
-
-    cout << "k_" << elem_ind << " = " << endl;
-    cout << k_basic << endl;
 
     ublas::matrix<double> k = ublas::zero_matrix<double>(dof);
     for (unsigned i = 0; i < 6; i++) {
@@ -204,9 +195,6 @@ namespace fem_2d {
       ublas::matrix<double> k_i = build_element_k_matrix(i, mesh);
       k += k_i;
     }
-
-    cout << "k before culling" << endl;
-    cout << k << endl;
 
     return k;
   }

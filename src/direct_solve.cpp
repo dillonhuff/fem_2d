@@ -93,8 +93,8 @@ namespace fem_2d {
     D(2, 2) = (1 - nu) / 2;
 
     D = (youngs_modulus / (1 - nu*nu)) * D;
-    cout << "D = " << endl;
-    cout << D << endl;
+    // cout << "D = " << endl;
+    // cout << D << endl;
 
     vertex_triangle t = mesh.tris[elem_ind];
 
@@ -140,23 +140,23 @@ namespace fem_2d {
 
     double detJ = x13*y23 - y13*x23;
 
-    cout << B << endl;
+    //cout << B << endl;
     
     B = (1.0 / detJ) * B;
 
 
     double area = std::abs(x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2;
 
-    cout << "Area = " << area << endl;
+    //cout << "Area = " << area << endl;
 
     //    D = thickness*area*D;
     ublas::matrix<double> B_t = trans(B);
     ublas::matrix<double> DB = prod(D, B);
 
-    cout << "Computing B_t D B" << endl;
+    //cout << "Computing B_t D B" << endl;
 
     ublas::matrix<double> k_basic = prod(B_t, DB);
-    cout << "Done with B_t D B" << endl;
+    //cout << "Done with B_t D B" << endl;
     k_basic = thickness*area*k_basic;
 
     ublas::matrix<double> k = ublas::zero_matrix<double>(dof);

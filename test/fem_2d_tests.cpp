@@ -7,6 +7,7 @@
 #include "trimesh.h"
 #include "utils.h"
 #include "vec2.h"
+#include "visual_debug.h"
 
 using namespace std;
 
@@ -40,9 +41,9 @@ namespace fem_2d {
       compute_displacements(mesh, constraints, forces);
 
 
-    REQUIRE(displacements.size() == 4);
+    visualize_mesh(mesh);
 
-    cout << "disp[2].y() = " << displacements[2].y() << endl;
+    REQUIRE(displacements.size() == 4);
 
     REQUIRE(within_eps(displacements[2].y(), -7.415e-5, 0.005));
   }

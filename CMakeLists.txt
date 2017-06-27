@@ -17,7 +17,8 @@ SET(SRC_FILES ./src/direct_solve.cpp
 	      ./src/trimesh.cpp
 	      ./src/vec2.cpp
 	      ./src/constraint.cpp
-	      ./src/visual_debug.cpp)
+	      ./src/visual_debug.cpp
+	      ./src/stresses.cpp)
 
 SET(TEST_FILES ./test/fem_2d_tests.cpp)
 

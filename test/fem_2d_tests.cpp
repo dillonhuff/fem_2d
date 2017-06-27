@@ -8,6 +8,7 @@
 #include "utils.h"
 #include "vec2.h"
 #include "visual_debug.h"
+#include "stresses.h"
 
 using namespace std;
 
@@ -41,11 +42,18 @@ namespace fem_2d {
       compute_displacements(mesh, constraints, forces);
 
 
-    visualize_mesh(mesh);
+    SECTION("Displacements") {
+      REQUIRE(displacements.size() == 4);
 
-    REQUIRE(displacements.size() == 4);
+      REQUIRE(within_eps(displacements[2].y(), -7.415e-5, 0.005));
+    }
 
-    REQUIRE(within_eps(displacements[2].y(), -7.415e-5, 0.005));
+    SECTION("Stresses") {
+      vector<double> stresses =
+	compute_stresses(displacements);
+
+      REQUIRE(stresses.size() == displacements.size());
+    }
   }
   
 }

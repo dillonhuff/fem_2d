@@ -50,7 +50,7 @@ namespace fem_2d {
 
     SECTION("Stresses") {
       vector<double> stresses =
-	compute_stresses(displacements);
+	compute_stresses(mesh, constraints, displacements);
 
       REQUIRE(stresses.size() == displacements.size());
     }

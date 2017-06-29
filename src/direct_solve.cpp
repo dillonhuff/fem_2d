@@ -114,15 +114,13 @@ namespace fem_2d {
   }
 
   ublas::matrix<double>
-  build_element_k_matrix(const unsigned elem_ind, const trimesh& mesh) {
-    unsigned dof = 2*mesh.verts.size();
-
+  build_D_matrix() {
     // Steel material properties
     double youngs_modulus = 30e6;
     double nu = 0.25;
 
     // Geometry
-    double thickness = 0.5;
+    //double thickness = 0.5;
 
     ublas::matrix<double> D = ublas::zero_matrix<double>(3, 3);
 
@@ -139,6 +137,37 @@ namespace fem_2d {
     D(2, 2) = (1 - nu) / 2;
 
     D = (youngs_modulus / (1 - nu*nu)) * D;
+    return D;
+  }
+
+  ublas::matrix<double>
+  build_element_k_matrix(const unsigned elem_ind, const trimesh& mesh) {
+    unsigned dof = 2*mesh.verts.size();
+
+    // Steel material properties
+    //double youngs_modulus = 30e6;
+    // double nu = 0.25;
+
+    // // Geometry
+    double thickness = 0.5;
+
+    ublas::matrix<double> D = build_D_matrix();
+
+    // ublas::matrix<double> D = ublas::zero_matrix<double>(3, 3);
+
+    // D(0, 0) = 1;
+    // D(0, 1) = nu;
+    // D(0, 2) = 0;
+
+    // D(1, 0) = nu;
+    // D(1, 1) = 1;
+    // D(1, 2) = 0;
+
+    // D(2, 0) = 0;
+    // D(2, 1) = 0;
+    // D(2, 2) = (1 - nu) / 2;
+
+    // D = (youngs_modulus / (1 - nu*nu)) * D;
     // cout << "D = " << endl;
     // cout << D << endl;
 

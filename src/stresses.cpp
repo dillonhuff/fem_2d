@@ -1,10 +1,8 @@
 #include "stresses.h"
 
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/lu.hpp>
-#include <boost/numeric/ublas/io.hpp>
+#include "matrices.h"
 
-namespace ublas = boost::numeric::ublas;
+using namespace std;
 
 namespace fem_2d {
 
@@ -20,6 +18,18 @@ namespace fem_2d {
     ublas::matrix<double> d_matrix =
       build_d_matrix(displacements);
 
+    for (int i = 0; i < mesh.tris.size(); i++) {
+      vertex_triangle t = mesh.tris[i];
+      cout << 2*t.verts[0] << endl;
+      cout << 2*t.verts[0] + 1 << endl;
+
+      cout << 2*t.verts[1] << endl;
+      cout << 2*t.verts[1] + 1 << endl;
+
+      cout << 2*t.verts[2] << endl;
+      cout << 2*t.verts[2] + 1 << endl;
+      
+    }
     return {};
   }
   

@@ -19,10 +19,14 @@ namespace fem_2d {
       vertex_triangle t = mesh.tris[i];
       v(0) = displacements[t.verts[0]].x();
       v(1) = displacements[t.verts[0]].y();
+
       v(2) = displacements[t.verts[1]].x();
       v(3) = displacements[t.verts[1]].y();
+
       v(4) = displacements[t.verts[2]].x();
       v(5) = displacements[t.verts[2]].y();
+
+      cout << "v = " << v << endl;
 
       // cout << 2*t.verts[0] << endl;
       // cout << 2*t.verts[0] + 1 << endl;

@@ -241,14 +241,14 @@ namespace fem_2d {
     cull_by_constraints(f, num_constraints);
     cull_by_constraints(k, num_constraints);
 
-    cout << "f size = " << f.size() << endl;
-    cout << "f = " << endl;
-    cout << f << endl;
+    // cout << "f size = " << f.size() << endl;
+    // cout << "f = " << endl;
+    // cout << f << endl;
 
-    cout << "k size 1 = " << k.size1() << endl;
-    cout << "k size 2 = " << k.size2() << endl;
-    cout << "k = " << endl;
-    cout << k << endl;
+    // cout << "k size 1 = " << k.size1() << endl;
+    // cout << "k size 2 = " << k.size2() << endl;
+    // cout << "k = " << endl;
+    // cout << k << endl;
 
     ublas::matrix<double> k_inv = ublas::identity_matrix<double>(k.size1());
     ublas::permutation_matrix<size_t> pm(k.size1());
@@ -258,7 +258,7 @@ namespace fem_2d {
     ublas::vector<double> u = prod(k_inv, f);
 
     cout.precision(17);
-    cout << "u = " << u << endl;
+    //cout << "u = " << u << endl;
 
     unsigned original_size = 2*forces.size();
     return from_vector(u, original_size, num_constraints);

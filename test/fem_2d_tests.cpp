@@ -22,8 +22,8 @@ namespace fem_2d {
     points.push_back(vec2(0, 0));
 
     vector<vertex_triangle> tris;
-    tris.push_back({0, 1, 2});
-    tris.push_back({0, 2, 3});
+    tris.push_back({0, 1, 3});
+    tris.push_back({3, 1, 2});
 
     trimesh mesh{points, tris};
 
@@ -41,6 +41,10 @@ namespace fem_2d {
     vector<vec2> displacements =
       compute_displacements(mesh, constraints, forces);
 
+    cout << "Displacements" << endl;
+    for (auto v : displacements) {
+      cout << v << endl;
+    }
 
     SECTION("Displacements") {
       REQUIRE(displacements.size() == 4);

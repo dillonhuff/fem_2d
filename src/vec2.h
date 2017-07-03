@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 namespace fem_2d {
 
   class vec2 {
@@ -12,4 +14,7 @@ namespace fem_2d {
     double x() const { return x_v; }
     double y() const { return y_v; }
   };
+
+  std::ostream& operator<<(std::ostream& out, const vec2 v);
+  
 }

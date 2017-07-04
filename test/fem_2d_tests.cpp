@@ -58,7 +58,8 @@ namespace fem_2d {
 
       REQUIRE(stresses.size() == mesh.tris.size());
 
-      
+      cout << "s01 = " << stresses[0](0) << endl;
+      REQUIRE(within_eps(stresses[0](0), -93, 1.0));
     }
   }
   

@@ -53,10 +53,12 @@ namespace fem_2d {
     }
 
     SECTION("Stresses") {
-      vector<double> stresses =
+      auto stresses =
 	compute_stresses(mesh, constraints, displacements);
 
-      REQUIRE(stresses.size() == displacements.size());
+      REQUIRE(stresses.size() == mesh.tris.size());
+
+      
     }
   }
   

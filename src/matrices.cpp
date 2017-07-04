@@ -23,6 +23,11 @@ namespace fem_2d {
     double x13 = x1 - x3;
     double x21 = x2 - x1;
 
+    //double y23 = y2 - y3;
+
+    double y13 = y1 - y3;
+    double x23 = x2 - x3;    
+
     ublas::matrix<double> B = ublas::zero_matrix<double>(3, 6);
     B(0, 0) = y23;
     B(0, 1) = 0;
@@ -45,6 +50,12 @@ namespace fem_2d {
     B(2, 4) = x21;
     B(2, 5) = y12;
 
+    double detJ = x13*y23 - y13*x23;
+
+    //cout << B << endl;
+    
+    B = (1.0 / detJ) * B;
+    
     return B;
   }
 

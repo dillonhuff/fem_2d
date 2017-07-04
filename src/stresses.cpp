@@ -36,10 +36,16 @@ namespace fem_2d {
 
       // cout << 2*t.verts[2] << endl;
       // cout << 2*t.verts[2] + 1 << endl;
+
       auto B = build_element_B_matrix(i, mesh);
+
+      cout << "B matrix = " << endl;
+      cout << B << endl;
+      cout << endl;
 
       auto db = prod(D, B);
 
+      cout << "d*b matrix = " << endl;
       cout << db << endl;
 
       auto stress = prod(db, v);

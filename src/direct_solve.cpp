@@ -81,24 +81,18 @@ namespace fem_2d {
     double y2 = mesh.verts[t.verts[1]].y();
     double y3 = mesh.verts[t.verts[2]].y();
 
-    double y23 = y2 - y3;
-    double y13 = y1 - y3;
+    // double y23 = y2 - y3;
+    // double y13 = y1 - y3;
 
     double x1 = mesh.verts[t.verts[0]].x();
     double x2 = mesh.verts[t.verts[1]].x();
     double x3 = mesh.verts[t.verts[2]].x();
 
-    double x13 = x1 - x3;
-    double x23 = x2 - x3;
+    // double x13 = x1 - x3;
+    // double x23 = x2 - x3;
 
     ublas::matrix<double> B =
       build_element_B_matrix(elem_ind, mesh);
-
-    double detJ = x13*y23 - y13*x23;
-
-    //cout << B << endl;
-    
-    B = (1.0 / detJ) * B;
 
 
     double area = std::abs(x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2;

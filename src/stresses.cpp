@@ -9,12 +9,13 @@ namespace fem_2d {
   std::vector<ublas::vector<double> >
   compute_stresses(const trimesh& mesh,
 		   const std::vector<constraint2>& constraints,
-		   const std::vector<vec2>& displacements) {
+		   const std::vector<vec2>& displacements,
+		   const material_properties& material) {
 
     cout << "# of displacements = " << displacements.size() << endl;
     // Steel material properties
-    double youngs_modulus = 30e6;
-    double nu = 0.25;
+    double youngs_modulus = material.youngs_modulus; //30e6;
+    double nu = material.nu; //0.25;
 
     auto D = build_D_matrix(youngs_modulus, nu);
 

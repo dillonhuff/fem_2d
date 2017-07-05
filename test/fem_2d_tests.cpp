@@ -38,8 +38,10 @@ namespace fem_2d {
     constraints.push_back({3, XY_FIXED});
     constraints.push_back({0, Y_FIXED});
 
+    material_properties material{30e6, 0.25};    
+
     vector<vec2> displacements =
-      compute_displacements(mesh, constraints, forces);
+      compute_displacements(mesh, constraints, forces, material);
 
     cout << "Displacements" << endl;
     for (auto v : displacements) {
@@ -54,7 +56,7 @@ namespace fem_2d {
 
     SECTION("Stresses") {
       auto stresses =
-	compute_stresses(mesh, constraints, displacements);
+	compute_stresses(mesh, constraints, displacements, material);
 
       REQUIRE(stresses.size() == mesh.tris.size());
 

@@ -2,6 +2,7 @@
 
 #include "matrices.h"
 
+
 using namespace std;
 
 namespace fem_2d {
@@ -64,7 +65,9 @@ namespace fem_2d {
   }
 
   ublas::matrix<double>
-  build_element_k_matrix(const unsigned elem_ind, const trimesh& mesh) {
+  build_element_k_matrix(const unsigned elem_ind,
+			 const trimesh& mesh,
+			 const material_properties& props) {
     unsigned dof = 2*mesh.verts.size();
 
     // Steel material properties
@@ -73,8 +76,8 @@ namespace fem_2d {
 
     double thickness = 0.5;
 
-    double youngs_modulus = 30e6;
-    double nu = 0.25;
+    double youngs_modulus = props.youngs_modulus;//30e6;
+    double nu = props.nu;//0.25;
 
     ublas::matrix<double> D = build_D_matrix(youngs_modulus, nu);
 
@@ -139,13 +142,15 @@ namespace fem_2d {
   }
   
   ublas::matrix<double>
-  build_k_matrix(const trimesh& mesh) {
+  build_k_matrix(const trimesh& mesh, const material_properties& material) {
     //ublas::vector<double> pts = to_vector(mesh.pts);
     unsigned dof = 2*mesh.verts.size();
     ublas::matrix<double> k = ublas::zero_matrix<double>(dof);
 
+    //material_properties material{30e6, 0.25};
+
     for (unsigned i = 0; i < mesh.tris.size(); i++) {
-      ublas::matrix<double> k_i = build_element_k_matrix(i, mesh);
+      ublas::matrix<double> k_i = build_element_k_matrix(i, mesh, material);
       k += k_i;
     }
 
@@ -230,9 +235,13 @@ namespace fem_2d {
   std::vector<vec2>
   compute_displacements(const trimesh& mesh,
 			const std::vector<constraint2>& constraints,
-			const std::vector<vec2>& forces) {
+			const std::vector<vec2>& forces,
+			const material_properties& material) {
+
+    //material_properties material{30e6, 0.25};
+    
     ublas::vector<double> f = to_vector(forces);
-    ublas::matrix<double> k = build_k_matrix(mesh);
+    ublas::matrix<double> k = build_k_matrix(mesh, material);
 
     vector<unsigned> num_constraints = build_num_constraints(constraints);
     cull_by_constraints(f, num_constraints);

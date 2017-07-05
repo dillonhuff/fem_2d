@@ -60,13 +60,8 @@ namespace fem_2d {
   }
 
   ublas::matrix<double>
-  build_D_matrix() {
-    // Steel material properties
-    double youngs_modulus = 30e6;
-    double nu = 0.25;
-
-    // Geometry
-    //double thickness = 0.5;
+  build_D_matrix(double const youngs_modulus,
+		 double const nu) {
 
     ublas::matrix<double> D = ublas::zero_matrix<double>(3, 3);
 

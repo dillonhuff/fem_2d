@@ -15,6 +15,7 @@ namespace fem_2d {
 			 const trimesh& mesh);
 
   ublas::matrix<double>
-  build_D_matrix();
+  build_D_matrix(double const youngs_modulus,
+		 double const nu);
 
 }

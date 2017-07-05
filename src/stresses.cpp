@@ -12,7 +12,11 @@ namespace fem_2d {
 		   const std::vector<vec2>& displacements) {
 
     cout << "# of displacements = " << displacements.size() << endl;
-    auto D = build_D_matrix();
+    // Steel material properties
+    double youngs_modulus = 30e6;
+    double nu = 0.25;
+
+    auto D = build_D_matrix(youngs_modulus, nu);
 
     vector<ublas::vector<double> > stresses;
     for (int i = 0; i < mesh.tris.size(); i++) {

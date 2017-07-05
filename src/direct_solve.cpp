@@ -73,7 +73,10 @@ namespace fem_2d {
 
     double thickness = 0.5;
 
-    ublas::matrix<double> D = build_D_matrix();
+    double youngs_modulus = 30e6;
+    double nu = 0.25;
+
+    ublas::matrix<double> D = build_D_matrix(youngs_modulus, nu);
 
     vertex_triangle t = mesh.tris[elem_ind];
 

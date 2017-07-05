@@ -19,7 +19,8 @@ SET(SRC_FILES ./src/direct_solve.cpp
 	      ./src/constraint.cpp
 	      ./src/visual_debug.cpp
 	      ./src/stresses.cpp
-	      ./src/matrices.cpp)
+	      ./src/matrices.cpp
+	      ./src/material.cpp)
 
 SET(TEST_FILES ./test/fem_2d_tests.cpp)
 

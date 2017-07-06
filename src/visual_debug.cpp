@@ -30,6 +30,19 @@
 
 namespace fem_2d {
 
+  class color {
+  protected:
+    unsigned r, g, b;
+
+  public:
+    color(unsigned p_r, unsigned p_g, unsigned p_b) :
+      r(p_r), g(p_g), b(p_b) {}
+
+    unsigned red() const { return r; }
+    unsigned green() const { return r; }
+    unsigned blue() const { return b; }
+  };
+
   void color_polydata(vtkSmartPointer<vtkPolyData> data,
 		      const unsigned char red,
 		      const unsigned char green,
@@ -52,6 +65,28 @@ namespace fem_2d {
 
   }
 
+  void color_polydata(vtkSmartPointer<vtkPolyData> data,
+		      const std::vector<color>& colors,
+		      const unsigned char red,
+		      const unsigned char green,
+		      const unsigned char blue) {
+
+    // Create a vtkUnsignedCharArray container and store the colors in it
+    vtkSmartPointer<vtkUnsignedCharArray> cell_colors =
+      vtkSmartPointer<vtkUnsignedCharArray>::New();
+    cell_colors->SetNumberOfComponents(3);
+    for (vtkIdType i = 0; i < data->GetNumberOfCells(); i++) {
+      unsigned char color[3];
+      color[0] = colors[i].red();
+      color[1] = colors[i].green();
+      color[2] = colors[i].blue();
+      cell_colors->InsertNextTupleValue(color);
+    }
+ 
+
+    data->GetCellData()->SetScalars(cell_colors);
+
+  }
   
   void visualize_actors(const std::vector<vtkSmartPointer<vtkActor> >& actors);
 

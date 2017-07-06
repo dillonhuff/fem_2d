@@ -103,16 +103,11 @@ namespace fem_2d {
 
     double area = std::abs(x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2;
 
-    //cout << "Area = " << area << endl;
-
-    //    D = thickness*area*D;
     ublas::matrix<double> B_t = trans(B);
     ublas::matrix<double> DB = prod(D, B);
 
-    //cout << "Computing B_t D B" << endl;
-
     ublas::matrix<double> k_basic = prod(B_t, DB);
-    //cout << "Done with B_t D B" << endl;
+
     k_basic = thickness*area*k_basic;
 
     ublas::matrix<double> k = ublas::zero_matrix<double>(dof);
@@ -238,8 +233,6 @@ namespace fem_2d {
 			const std::vector<vec2>& forces,
 			const material_properties& material) {
 
-    //material_properties material{30e6, 0.25};
-    
     ublas::vector<double> f = to_vector(forces);
     ublas::matrix<double> k = build_k_matrix(mesh, material);
 
@@ -247,24 +240,12 @@ namespace fem_2d {
     cull_by_constraints(f, num_constraints);
     cull_by_constraints(k, num_constraints);
 
-    // cout << "f size = " << f.size() << endl;
-    // cout << "f = " << endl;
-    // cout << f << endl;
-
-    // cout << "k size 1 = " << k.size1() << endl;
-    // cout << "k size 2 = " << k.size2() << endl;
-    // cout << "k = " << endl;
-    // cout << k << endl;
-
     ublas::matrix<double> k_inv = ublas::identity_matrix<double>(k.size1());
     ublas::permutation_matrix<size_t> pm(k.size1());
     lu_factorize(k, pm);
     lu_substitute(k, pm, k_inv);    
 
     ublas::vector<double> u = prod(k_inv, f);
-
-    cout.precision(17);
-    //cout << "u = " << u << endl;
 
     unsigned original_size = 2*forces.size();
     return from_vector(u, original_size, num_constraints);

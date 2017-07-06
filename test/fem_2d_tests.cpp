@@ -43,11 +43,6 @@ namespace fem_2d {
     vector<vec2> displacements =
       compute_displacements(mesh, constraints, forces, material);
 
-    cout << "Displacements" << endl;
-    for (auto v : displacements) {
-      cout << v << endl;
-    }
-
     SECTION("Displacements") {
       REQUIRE(displacements.size() == 4);
 
@@ -60,7 +55,6 @@ namespace fem_2d {
 
       REQUIRE(stresses.size() == mesh.tris.size());
 
-      cout << "s01 = " << stresses[0](0) << endl;
       REQUIRE(within_eps(stresses[0](0), -93, 1.0));
     }
   }

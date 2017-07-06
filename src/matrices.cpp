@@ -52,8 +52,6 @@ namespace fem_2d {
 
     double detJ = x13*y23 - y13*x23;
 
-    //cout << B << endl;
-    
     B = (1.0 / detJ) * B;
     
     return B;

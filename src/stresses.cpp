@@ -12,7 +12,6 @@ namespace fem_2d {
 		   const std::vector<vec2>& displacements,
 		   const material_properties& material) {
 
-    cout << "# of displacements = " << displacements.size() << endl;
     // Steel material properties
     double youngs_modulus = material.youngs_modulus; //30e6;
     double nu = material.nu; //0.25;
@@ -35,17 +34,9 @@ namespace fem_2d {
 
       auto B = build_element_B_matrix(i, mesh);
 
-      cout << "B matrix = " << endl;
-      cout << B << endl;
-      cout << endl;
-
       auto db = prod(D, B);
 
-      cout << "d*b matrix = " << endl;
-      cout << db << endl;
-
       auto stress = prod(db, v);
-      cout << "stress = " << stress << endl;
       stresses.push_back(stress);
     }
 

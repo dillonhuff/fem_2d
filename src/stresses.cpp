@@ -12,9 +12,8 @@ namespace fem_2d {
 		   const std::vector<vec2>& displacements,
 		   const material_properties& material) {
 
-    // Steel material properties
-    double youngs_modulus = material.youngs_modulus; //30e6;
-    double nu = material.nu; //0.25;
+    double youngs_modulus = material.youngs_modulus;
+    double nu = material.nu;
 
     auto D = build_D_matrix(youngs_modulus, nu);
 

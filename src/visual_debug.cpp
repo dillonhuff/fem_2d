@@ -28,6 +28,8 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderer.h>
 
+using namespace std;
+
 namespace fem_2d {
 
   class color {
@@ -175,10 +177,17 @@ namespace fem_2d {
   }
 
   void visualize_stresses(const trimesh& mesh,
-			  const std::vector<ublas::vector<double>>& displacements) {
-    auto pd = polydata_for_trimesh(mesh);
+			  const std::vector<ublas::vector<double>>& stresses) {
+    assert(stresses.size() == mesh.tris.size());
 
-    color_polydata(pd, 0, 255, 0);
+    auto pd = polydata_for_trimesh(mesh);
+    vector<color> colors;
+    for (auto& s : stresses) {
+      cout << s << endl;
+      colors.push_back(color(0, 0, 255));
+    }
+
+    color_polydata(pd, colors);
     visualize_polydatas({pd});
   }
 

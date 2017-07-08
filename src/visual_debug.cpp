@@ -66,10 +66,7 @@ namespace fem_2d {
   }
 
   void color_polydata(vtkSmartPointer<vtkPolyData> data,
-		      const std::vector<color>& colors,
-		      const unsigned char red,
-		      const unsigned char green,
-		      const unsigned char blue) {
+		      const std::vector<color>& colors) {
 
     // Create a vtkUnsignedCharArray container and store the colors in it
     vtkSmartPointer<vtkUnsignedCharArray> cell_colors =
@@ -174,6 +171,14 @@ namespace fem_2d {
   
   void visualize_mesh(const trimesh& mesh) {
     auto pd = polydata_for_trimesh(mesh);
+    visualize_polydatas({pd});
+  }
+
+  void visualize_stresses(const trimesh& mesh,
+			  const std::vector<ublas::vector<double>>& displacements) {
+    auto pd = polydata_for_trimesh(mesh);
+
+    color_polydata(pd, 0, 255, 0);
     visualize_polydatas({pd});
   }
 

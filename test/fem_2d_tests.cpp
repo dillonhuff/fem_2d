@@ -56,6 +56,8 @@ namespace fem_2d {
       REQUIRE(stresses.size() == mesh.tris.size());
 
       REQUIRE(within_eps(stresses[0](0), -93, 1.0));
+
+      visualize_stresses(mesh, stresses);
     }
   }
   

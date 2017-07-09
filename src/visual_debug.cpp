@@ -184,6 +184,20 @@ namespace fem_2d {
     return sqrt(nm);
   }
 
+  double min_stress(const std::vector<ublas::vector<double>>& stresses) {
+    assert(stresses.size() > 0);
+
+    double min_stress = 1e30;
+    for (auto& s : stresses) {
+      double mag = norm(s);
+      if (mag < min_stress) {
+	min_stress = mag;
+      }
+    }
+
+    return min_stress;
+  }
+  
   double max_stress(const std::vector<ublas::vector<double>>& stresses) {
     assert(stresses.size() > 0);
 
@@ -198,6 +212,15 @@ namespace fem_2d {
     return max_stress;
   }
 
+  color scaled_color(const double min,
+		     const double max,
+		     const double val) {
+    assert(min <= val);
+    assert(val <= max);
+
+    return color(255, 255, 0);
+  }
+
   void visualize_stresses(const trimesh& mesh,
 			  const std::vector<ublas::vector<double>>& stresses) {
     assert(stresses.size() == mesh.tris.size());
@@ -205,14 +228,16 @@ namespace fem_2d {
     auto pd = polydata_for_trimesh(mesh);
 
     double ms = max_stress(stresses);
+    double mn = min_stress(stresses);
 
     cout << "Max stress = " << ms << endl;
+    cout << "Min stress = " << mn << endl;
 
     vector<color> colors;
     
     for (auto& s : stresses) {
       cout << s << endl;
-      colors.push_back(color(0, 0, 255));
+      colors.push_back(scaled_color(mn, ms, norm(s)));
     }
 
     color_polydata(pd, colors);

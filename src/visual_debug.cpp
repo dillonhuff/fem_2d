@@ -176,12 +176,40 @@ namespace fem_2d {
     visualize_polydatas({pd});
   }
 
+  double norm(const ublas::vector<double>& vec) {
+    double nm = 0.0;
+    for (int i = 0; i < vec.size(); i++) {
+      nm += vec(i)*vec(i);
+    }
+    return sqrt(nm);
+  }
+
+  double max_stress(const std::vector<ublas::vector<double>>& stresses) {
+    assert(stresses.size() > 0);
+
+    double max_stress = -1.0;
+    for (auto& s : stresses) {
+      double mag = norm(s);
+      if (mag > max_stress) {
+	max_stress = mag;
+      }
+    }
+
+    return max_stress;
+  }
+
   void visualize_stresses(const trimesh& mesh,
 			  const std::vector<ublas::vector<double>>& stresses) {
     assert(stresses.size() == mesh.tris.size());
 
     auto pd = polydata_for_trimesh(mesh);
+
+    double ms = max_stress(stresses);
+
+    cout << "Max stress = " << ms << endl;
+
     vector<color> colors;
+    
     for (auto& s : stresses) {
       cout << s << endl;
       colors.push_back(color(0, 0, 255));

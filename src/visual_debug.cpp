@@ -79,6 +79,11 @@ namespace fem_2d {
       color[0] = colors[i].red();
       color[1] = colors[i].green();
       color[2] = colors[i].blue();
+
+      cout << "red = " << colors[i].red() << endl;
+      cout << "green = " << colors[i].green() << endl;
+      cout << "blue = " << colors[i].blue() << endl;
+
       cell_colors->InsertNextTupleValue(color);
     }
  
@@ -221,13 +226,16 @@ namespace fem_2d {
     double normed = val - min;
     double normed_max = max - min;
 
-    double frac = normed / normed_max;
-    cout << "frac = " << frac << endl;
-    double cv = 255*frac;
-    int cv_int = (int) cv;
-    cout << "color val = " << cv_int << endl;    
+    double frac = (normed / normed_max)*100;
+    int R = (255 * frac) / 100;
+    int G = (255 * (100 - frac)) / 100 ;
+    int B = 0;
 
-    return color(cv_int, 0, 0);
+    cout << "R = " << R << endl;
+    cout << "G = " << G << endl;
+    cout << "B = " << B << endl;
+
+    return color(R, G, B);
   }
 
   void visualize_stresses(const trimesh& mesh,

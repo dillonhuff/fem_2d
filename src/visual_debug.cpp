@@ -224,9 +224,10 @@ namespace fem_2d {
     double frac = normed / normed_max;
     cout << "frac = " << frac << endl;
     double cv = 255*frac;
-    cout << "color val = " << cv << endl;
-    
-    return color(cv, 0, 0);
+    int cv_int = (int) cv;
+    cout << "color val = " << cv_int << endl;    
+
+    return color(cv_int, 0, 0);
   }
 
   void visualize_stresses(const trimesh& mesh,

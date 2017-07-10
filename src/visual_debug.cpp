@@ -254,7 +254,11 @@ namespace fem_2d {
     
     for (auto& s : stresses) {
       cout << s << endl;
-      colors.push_back(scaled_color(mn, ms, norm(s)));
+      color sc = scaled_color(mn, ms, norm(s));
+      cout << "sc red = " << sc.red() << endl;
+      cout << "sc green = " << sc.green() << endl;
+      cout << "sc blue = " << sc.blue() << endl;
+      colors.push_back(sc);
     }
 
     color_polydata(pd, colors);

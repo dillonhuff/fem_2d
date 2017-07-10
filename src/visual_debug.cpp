@@ -218,7 +218,15 @@ namespace fem_2d {
     assert(min <= val);
     assert(val <= max);
 
-    return color(255, 255, 0);
+    double normed = val - min;
+    double normed_max = max - min;
+
+    double frac = normed / normed_max;
+    cout << "frac = " << frac << endl;
+    double cv = 255*frac;
+    cout << "color val = " << cv << endl;
+    
+    return color(cv, 0, 0);
   }
 
   void visualize_stresses(const trimesh& mesh,

@@ -41,7 +41,7 @@ namespace fem_2d {
       r(p_r), g(p_g), b(p_b) {}
 
     unsigned red() const { return r; }
-    unsigned green() const { return r; }
+    unsigned green() const { return g; }
     unsigned blue() const { return b; }
   };
 
@@ -235,7 +235,11 @@ namespace fem_2d {
     cout << "G = " << G << endl;
     cout << "B = " << B << endl;
 
-    return color(R, G, B);
+    color scaled_c(R, G, B);
+    cout << "scaled_c red = " << scaled_c.red() << endl;
+    cout << "scaled_c green = " << scaled_c.green() << endl;
+    cout << "scaled_c blue = " << scaled_c.blue() << endl;
+    return scaled_c;
   }
 
   void visualize_stresses(const trimesh& mesh,

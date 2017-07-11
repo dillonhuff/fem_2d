@@ -80,10 +80,6 @@ namespace fem_2d {
       color[1] = colors[i].green();
       color[2] = colors[i].blue();
 
-      cout << "red = " << colors[i].red() << endl;
-      cout << "green = " << colors[i].green() << endl;
-      cout << "blue = " << colors[i].blue() << endl;
-
       cell_colors->InsertNextTupleValue(color);
     }
  
@@ -231,14 +227,7 @@ namespace fem_2d {
     int G = (255 * (100 - frac)) / 100 ;
     int B = 0;
 
-    cout << "R = " << R << endl;
-    cout << "G = " << G << endl;
-    cout << "B = " << B << endl;
-
     color scaled_c(R, G, B);
-    cout << "scaled_c red = " << scaled_c.red() << endl;
-    cout << "scaled_c green = " << scaled_c.green() << endl;
-    cout << "scaled_c blue = " << scaled_c.blue() << endl;
     return scaled_c;
   }
 
@@ -251,17 +240,10 @@ namespace fem_2d {
     double ms = max_stress(stresses);
     double mn = min_stress(stresses);
 
-    cout << "Max stress = " << ms << endl;
-    cout << "Min stress = " << mn << endl;
-
     vector<color> colors;
     
     for (auto& s : stresses) {
-      cout << s << endl;
       color sc = scaled_color(mn, ms, norm(s));
-      cout << "sc red = " << sc.red() << endl;
-      cout << "sc green = " << sc.green() << endl;
-      cout << "sc blue = " << sc.blue() << endl;
       colors.push_back(sc);
     }
 
